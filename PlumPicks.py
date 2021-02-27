@@ -10,6 +10,7 @@ import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+import statistics
 
 
 #datetime object containig current date and time
@@ -72,12 +73,42 @@ def unitCalc(plum):
             pass
     return sum(unitData)
 
+def winPerc(plum):
+    winRatio = []
+    winRatio.clear()
+    try:
+        for index, row in plum.iterrows():
+            Result = row['Result'].strip()
+            if Result == "Win":
+                winRatio.append(1)
+            elif Result == "Loss":
+                winRatio.append(0)
+        winP = sum(winRatio)/len(winRatio)
+    except:
+        print('unrecognized data')
+        pass
+    return winP
+        
+def avgUnit(plum):
+    unitAvg = []
+    try:
+        for index, row in plum.iterrows():
+            Units = float(row['Units'])
+            unitAvg.append(Units)
+        averageUnit = statistics.mean(unitAvg)
+    except:
+        print("unrecognzied data")
+        pass
+    return averageUnit
+
 #update sheet
 for i in plumNames:
     for j in range(1,8):
         if statSheet.cell(j,1).value == i:
             statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
             statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
+            statSheet.update_cell(j,4, winPerc(plumOwnerDict[i]))
+            statSheet.update_cell(j,5, avgUnit(plumOwnerDict[i]))
         
 
 
