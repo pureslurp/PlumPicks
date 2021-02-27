@@ -9,7 +9,7 @@ Created on Sat Feb 20 09:21:31 2021
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
-import datetime
+from datetime import datetime
 
 
 #datetime object containig current date and time
@@ -83,4 +83,4 @@ for i in plumNames:
 
 #log time
 dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
-print("date and time= ", dt_string)
+print("date and time = ", dt_string)
