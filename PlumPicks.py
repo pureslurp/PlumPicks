@@ -82,5 +82,5 @@ for i in plumNames:
 
 
 #log time
-dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
 print("date and time = ", dt_string)
