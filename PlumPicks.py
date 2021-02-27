@@ -9,6 +9,11 @@ Created on Sat Feb 20 09:21:31 2021
 import pandas as pd
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
+import datetime
+
+
+#datetime object containig current date and time
+now = datetime.now()
 
 #establish connection to google sheets
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
@@ -76,8 +81,6 @@ for i in plumNames:
         
 
 
-
-
-
-#print(df['Owner'])
-#print(df['Team/Player'])
+#log time
+dt_string = now.strftime("%d/%m/%Y %H:%M:%S")
+print("date and time= ", dt_string)
