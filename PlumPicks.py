@@ -75,19 +75,27 @@ def unitCalc(plum):
 
 def winPerc(plum):
     winRatio = []
+    parlayRatio = []
+    parlayRatio.clear()
     winRatio.clear()
     try:
         for index, row in plum.iterrows():
             Result = row['Result'].strip()
-            if Result == "Win":
+            Bet = row["Bet"].strip()
+            if Result == "Win" and Bet == "Straight":
                 winRatio.append(1)
-            elif Result == "Loss":
+            elif Result == "Loss" and Bet == "Straight":
                 winRatio.append(0)
+            if Result == "Win" and Bet == "Parlay":
+                parlayRatio.append(1)
+            elif Result == "Loss" and Bet == "Parlay":
+                parlayRatio.append(0)
         winP = sum(winRatio)/len(winRatio)
+        parlWinP = sum(parlayRatio)/len(parlayRatio)
     except:
         print('unrecognized data')
         pass
-    return winP
+    return winP, parlWinP
         
 def avgUnit(plum):
     unitAvg = []
@@ -107,8 +115,10 @@ for i in plumNames:
         if statSheet.cell(j,1).value == i:
             statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
             statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
-            statSheet.update_cell(j,4, winPerc(plumOwnerDict[i]))
-            statSheet.update_cell(j,5, avgUnit(plumOwnerDict[i]))
+            winPercentage = winPerc(plumOwnerDict[i])
+            statSheet.update_cell(j,4, winPercentage[0])
+            statSheet.update_cell(j,5, winPercentage[1])
+            statSheet.update_cell(j,6, avgUnit(plumOwnerDict[i]))
             
         
 #log time
