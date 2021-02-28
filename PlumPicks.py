@@ -109,9 +109,10 @@ for i in plumNames:
             statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
             statSheet.update_cell(j,4, winPerc(plumOwnerDict[i]))
             statSheet.update_cell(j,5, avgUnit(plumOwnerDict[i]))
+            
         
-
-
 #log time
 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
 print("date and time = ", dt_string)
+
+statSheet.update_cell(12,1, dt_string)
