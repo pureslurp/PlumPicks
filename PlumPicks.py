@@ -115,4 +115,4 @@ for i in plumNames:
 dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
 print("date and time = ", dt_string)
 
-statSheet.update_cell(12,1, dt_string)
+statSheet.update_cell(12,2, dt_string)
