@@ -52,8 +52,7 @@ for i in plumNames:
 def unitCalc(plum):
     unitData = []
     unitData.clear()
-    plumClipped = plum.drop(['Date','Owner','League','Team/Player','Bet','SR','DW','NB','KI','JW','JG'],axis=1)
-    for index, row in plumClipped.iterrows():
+    for index, row in plum.iterrows():
         try:
             Line = int(row['Line'])
             Result = row['Result'].strip()
@@ -113,6 +112,57 @@ def avgUnit(plum):
         pass
     return averageUnit
 
+def strCalc(plum):
+    strData = []
+    strData.clear()
+    for index, row in plum.iterrows():
+        try:
+            Line = int(row['Line'])
+            Result = row['Result'].strip()
+            Units = float(row['Units'])
+            Bet = row['Bet']
+            if Line < 0:
+                Risk = -1.0
+                Win = -100/Line
+            else:
+                Risk = -1.0
+                Win = Line * .01
+            if Result == "Win" and Bet == "Straight":
+                strData.append(Win * Units)
+            elif Result == "Loss" and "Straight":
+                strData.append(Risk * Units)
+        except:
+            print('unrecognized data')
+            strData = 0
+            pass
+    return sum(strData)
+
+def parlCalc(plum):
+    parlData = []
+    parlData.clear()
+    for index, row in plum.iterrows():
+        try:
+            Line = int(row['Line'])
+            Result = row['Result'].strip()
+            Units = float(row['Units'])
+            Bet = row['Bet']
+            if Line < 0:
+                Risk = -1.0
+                Win = -100/Line
+            else:
+                Risk = -1.0
+                Win = Line * .01
+            if Result == "Win" and Bet == "Parlay":
+                parlData.append(Win * Units)
+            elif Result == "Loss" and "Parlay":
+                parlData.append(Risk * Units)
+        except:
+            print('unrecognized data')
+            parlData = 0
+            pass
+    return sum(parlData)
+
+
 #update sheet
 for i in plumNames:
     for j in range(1,8):
@@ -120,9 +170,11 @@ for i in plumNames:
             statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
             statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
             winPercentage = winPerc(plumOwnerDict[i])
-            statSheet.update_cell(j,4, winPercentage[0])
-            statSheet.update_cell(j,5, winPercentage[1])
-            statSheet.update_cell(j,6, avgUnit(plumOwnerDict[i]))
+            statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
+            statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
+            statSheet.update_cell(j,6, winPercentage[0])
+            statSheet.update_cell(j,7, winPercentage[1])
+            statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
             
         
 #log time
