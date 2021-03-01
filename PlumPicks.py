@@ -70,6 +70,7 @@ def unitCalc(plum):
                 unitData.append(Risk * Units)
         except:
             print('unrecognized data')
+            unitData = 0
             pass
     return sum(unitData)
 
@@ -94,6 +95,8 @@ def winPerc(plum):
         parlWinP = sum(parlayRatio)/len(parlayRatio)
     except:
         print('unrecognized data')
+        winP = "N/A"
+        parlWinP = "N/A"
         pass
     return winP, parlWinP
         
@@ -106,6 +109,7 @@ def avgUnit(plum):
         averageUnit = statistics.mean(unitAvg)
     except:
         print("unrecognzied data")
+        averageUnit = 0
         pass
     return averageUnit
 
