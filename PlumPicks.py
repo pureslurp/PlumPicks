@@ -11,6 +11,7 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 import statistics
+import time
 
 
 #datetime object containig current date and time
@@ -90,10 +91,16 @@ def winPerc(plum):
                 parlayRatio.append(1)
             elif Result == "Loss" and Bet == "Parlay":
                 parlayRatio.append(0)
-        winP = sum(winRatio)/len(winRatio)
-        parlWinP = sum(parlayRatio)/len(parlayRatio)
+        if len(winRatio) > 0:
+            winP = sum(winRatio)/len(winRatio)
+        else:
+            winP = "N/A"
+        if len(parlayRatio) > 0:
+            parlWinP = sum(parlayRatio)/len(parlayRatio)
+        else:
+            parlWinP = "N/A"
     except:
-        print('unrecognized data')
+        print('unrecognizedd data')
         winP = "N/A"
         parlWinP = "N/A"
         pass
@@ -163,18 +170,21 @@ def parlCalc(plum):
     return sum(parlData)
 
 
-#update sheet
-for i in plumNames:
-    for j in range(1,8):
-        if statSheet.cell(j,1).value == i:
-            statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
-            statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
-            winPercentage = winPerc(plumOwnerDict[i])
-            statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
-            statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
-            statSheet.update_cell(j,6, winPercentage[0])
-            statSheet.update_cell(j,7, winPercentage[1])
-            statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
+
+while True: 
+    #update sheet
+    for i in plumNames:
+        for j in range(1,8):
+            if statSheet.cell(j,1).value == i:
+                statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
+                statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
+                winPercentage = winPerc(plumOwnerDict[i])
+                statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
+                statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
+                statSheet.update_cell(j,6, winPercentage[0])
+                statSheet.update_cell(j,7, winPercentage[1])
+                statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
+    time.sleep(1800)
             
         
 #log time
