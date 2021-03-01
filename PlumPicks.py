@@ -171,7 +171,7 @@ def parlCalc(plum):
 
 
 
-while True: 
+while True:
     #update sheet
     for i in plumNames:
         for j in range(1,8):
