@@ -184,14 +184,14 @@ while True:
                 statSheet.update_cell(j,6, winPercentage[0])
                 statSheet.update_cell(j,7, winPercentage[1])
                 statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
+    #log time
+    dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
+    print("date and time = ", dt_string)
+    statSheet.update_cell(12,2, dt_string)
     time.sleep(1800)
             
         
-#log time
-dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
-print("date and time = ", dt_string)
 
-statSheet.update_cell(12,2, dt_string)
 
 
 
