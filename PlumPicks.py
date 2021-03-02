@@ -192,7 +192,7 @@ while True:
     while x < 30:
         time.sleep(60)
         print('{} min until next update'.format(30-x))
-        x =+ 1
+        x = x + 1
             
         
 
