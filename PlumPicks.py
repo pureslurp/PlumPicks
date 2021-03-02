@@ -188,7 +188,11 @@ while True:
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
     print("date and time = ", dt_string)
     statSheet.update_cell(12,2, dt_string)
-    time.sleep(1800)
+    x = 0
+    while x < 30:
+        time.sleep(60)
+        print('{} min until next update'.format(30-x))
+        x =+ 1
             
         
 
