@@ -95,7 +95,7 @@ def strCalc(plum):
                 Win = Line * .01
             if Result == "Win" and Bet == "Straight":
                 strData.append(Win * Units)
-            elif Result == "Loss" and "Straight":
+            elif Result == "Loss" and Bet == "Straight":
                 strData.append(Risk * Units)
         except:
             print('unrecognized data')
@@ -111,7 +111,7 @@ def parlCalc(plum):
             Line = int(row['Line'])
             Result = row['Result'].strip()
             Units = float(row['Units'])
-            Bet = row['Bet']
+            Bet = row['Bet'].strip()
             if Line < 0:
                 Risk = -1.0
                 Win = -100/Line
@@ -120,7 +120,7 @@ def parlCalc(plum):
                 Win = Line * .01
             if Result == "Win" and Bet == "Parlay":
                 parlData.append(Win * Units)
-            elif Result == "Loss" and "Parlay":
+            elif Result == "Loss" and Bet == "Parlay":
                 parlData.append(Risk * Units)
         except:
             print('unrecognized data')
