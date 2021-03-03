@@ -130,3 +130,53 @@ def parlCalc(plum):
     if not parlData:
         parlData = [0,0]
     return sum(parlData)
+
+def atRisk(plum):
+    atRiskArray = []
+    atRiskArray.clear()
+    for index, row in plum.iterrows():
+        try:
+            Line = int(row['Line'])
+            Units = float(row['Units'])
+            if row['Result'] == "":
+                if Line < 0:
+                    Risk = -1.0
+                    #Win = -100/Line
+                else:
+                    Risk = -1.0
+                    #Win = Line * .01
+                atRiskArray.append(Risk * Units)
+        except:
+            print('unrecognized data')
+            pass
+    if not atRiskArray:
+        atRiskArray = [0,0]
+    return sum(atRiskArray)
+                
+    
+def toWin(plum):
+    toWinArray = []
+    toWinArray.clear()
+    for index, row in plum.iterrows():
+        try:
+            Line = int(row['Line'])
+            Units = float(row['Units'])
+            if row['Result'] == "":
+                if Line < 0:
+                    #Risk = -1.0
+                    Win = -100/Line
+                else:
+                    #Risk = -1.0
+                    Win = Line * .01
+                toWinArray.append(Win * Units)
+        except:
+            print('unrecognized data')
+            pass
+    if not toWinArray:
+        toWinArray = [0,0]
+    return sum(toWinArray)
+    
+    
+    
+    
+    

@@ -12,7 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 #import statistics
 import time
-from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit
+from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin
 
 winColumnPrev = 0
 
@@ -68,7 +68,9 @@ while True:
                     statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
                     statSheet.update_cell(j,6, winPercentage[0])
                     statSheet.update_cell(j,7, winPercentage[1])
-                    statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
+                    statSheet.update_cell(j,8, atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))
+                    statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
+                    statSheet.update_cell(j,10, avgUnit(plumOwnerDict[i]))
         #log time
         print("date and time = ", dt_string)
         statSheet.update_cell(12,2, dt_string)
