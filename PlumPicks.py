@@ -14,6 +14,7 @@ from datetime import datetime
 import time
 from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit
 
+winColumnPrev = 0
 
 while True:
     #establish connection to google sheets
@@ -28,6 +29,8 @@ while True:
     #grab our names and assign to array of strings
     Plums = statSheet.col_values(1)
     plumNames = Plums[1:]
+    
+    winColumn = dataSheet.col_values(8)
     
     #create a DataFrame with all our picks :)
     data = dataSheet.get_all_values()
@@ -48,27 +51,33 @@ while True:
         ld = df[df.Owner != i]
         ld.drop(ld[ld[i].str.strip() != "X"].index, inplace = True)
         plumRideDict[i] = ld
-    #update sheet
-    for i in plumNames:
-        for j in range(1,8):
-            if statSheet.cell(j,1).value == i:
-                statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
-                statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
-                winPercentage = winPerc(plumOwnerDict[i])
-                statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
-                statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
-                statSheet.update_cell(j,6, winPercentage[0])
-                statSheet.update_cell(j,7, winPercentage[1])
-                statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
-    #log time
+    
+    #get current time
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
-    print("date and time = ", dt_string)
-    statSheet.update_cell(12,2, dt_string)
-    x = 0
-    while x < 30:
-        time.sleep(60)
-        print('{} min until next update'.format(30-x))
-        x = x + 1
+    
+    #check if updates were made
+    if len(list(filter(None,winColumn[1:]))) != winColumnPrev:
+        #update sheet
+        for i in plumNames:
+            for j in range(1,8):
+                if statSheet.cell(j,1).value == i:
+                    statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
+                    statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
+                    winPercentage = winPerc(plumOwnerDict[i])
+                    statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
+                    statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
+                    statSheet.update_cell(j,6, winPercentage[0])
+                    statSheet.update_cell(j,7, winPercentage[1])
+                    statSheet.update_cell(j,8, avgUnit(plumOwnerDict[i]))
+        #log time
+        print("date and time = ", dt_string)
+        statSheet.update_cell(12,2, dt_string)
+        x = 0
+    else: 
+        print('no updates @ {}'.format(dt_string))
+    #set prev column length and sleep for 1 min
+    winColumnPrev = len(list(filter(None,winColumn[1:])))
+    time.sleep(60)
             
         
 

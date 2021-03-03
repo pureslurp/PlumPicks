@@ -29,7 +29,7 @@ def unitCalc(plum):
                 unitData.append(Risk * Units)
         except:
             print('unrecognized data')
-            unitData = 0
+            unitData = [0,0]
             pass
     return sum(unitData)
 
@@ -99,7 +99,7 @@ def strCalc(plum):
                 strData.append(Risk * Units)
         except:
             print('unrecognized data')
-            strData = 0
+            strData = [0,0]
             pass
     return sum(strData)
 
@@ -124,6 +124,6 @@ def parlCalc(plum):
                 parlData.append(Risk * Units)
         except:
             print('unrecognized data')
-            parlData = 0
+            parlData = [0,0]
             pass
     return sum(parlData)
