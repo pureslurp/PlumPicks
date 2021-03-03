@@ -69,14 +69,13 @@ def winPerc(plum):
 def avgUnit(plum):
     unitAvg = []
     averageUnit = 0
-    try:
-        for index, row in plum.iterrows():
+    for index, row in plum.iterrows():
+        try:
             Units = float(row['Units'])
             unitAvg.append(Units)
-        averageUnit = statistics.mean(unitAvg)
-    except:
-        print("unrecognzied data")
-        pass
+        except:
+            pass
+    averageUnit = statistics.mean(unitAvg)
     return averageUnit
 
 def strCalc(plum):
