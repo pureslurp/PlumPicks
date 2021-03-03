@@ -15,6 +15,7 @@ import time
 from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin
 
 winColumnPrev = 0
+unitColumnPrev = 0
 
 while True:
     #establish connection to google sheets
@@ -31,6 +32,7 @@ while True:
     plumNames = Plums[1:]
     
     winColumn = dataSheet.col_values(8)
+    unitColumn = dataSheet.col_values(7)
     
     #create a DataFrame with all our picks :)
     data = dataSheet.get_all_values()
@@ -56,7 +58,7 @@ while True:
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
     
     #check if updates were made
-    if len(list(filter(None,winColumn[1:]))) != winColumnPrev:
+    if len(list(filter(None,winColumn[1:]))) != winColumnPrev or len(list(filter(None,unitColumn[1:]))) != unitColumnPrev:
         #update sheet
         for i in plumNames:
             for j in range(1,8):
@@ -79,6 +81,7 @@ while True:
         print('no updates @ {}'.format(dt_string))
     #set prev column length and sleep for 1 min
     winColumnPrev = len(list(filter(None,winColumn[1:])))
+    unitColumnPrev = len(list(filter(None,unitColumn[1:])))
     time.sleep(60)
             
         
