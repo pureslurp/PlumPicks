@@ -29,8 +29,9 @@ def unitCalc(plum):
                 unitData.append(Risk * Units)
         except:
             print('unrecognized data')
-            unitData = [0,0]
             pass
+    if not unitData:
+        unitData = [0,0]
     return sum(unitData)
 
 def winPerc(plum):
@@ -67,6 +68,7 @@ def winPerc(plum):
         
 def avgUnit(plum):
     unitAvg = []
+    averageUnit = 0
     try:
         for index, row in plum.iterrows():
             Units = float(row['Units'])
@@ -74,7 +76,6 @@ def avgUnit(plum):
         averageUnit = statistics.mean(unitAvg)
     except:
         print("unrecognzied data")
-        averageUnit = 0
         pass
     return averageUnit
 
@@ -99,8 +100,9 @@ def strCalc(plum):
                 strData.append(Risk * Units)
         except:
             print('unrecognized data')
-            strData = [0,0]
             pass
+    if not strData:
+            strData = [0,0]
     return sum(strData)
 
 def parlCalc(plum):
@@ -124,6 +126,7 @@ def parlCalc(plum):
                 parlData.append(Risk * Units)
         except:
             print('unrecognized data')
-            parlData = [0,0]
             pass
+    if not parlData:
+        parlData = [0,0]
     return sum(parlData)
