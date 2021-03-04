@@ -7,13 +7,9 @@ Created on Thu Mar  4 13:37:36 2021
 """
 
 import subprocess
-import time
 
 from gpiozero import OutputDevice
 
-ON_THRESHOLD = 65
-OFF_THRESHOLD = 55
-SLEEP_INTERVAL = 5
 GPIO_PIN = 17
 
 def get_temp():
@@ -26,11 +22,9 @@ def get_temp():
          
 fan = OutputDevice(GPIO_PIN)
 
-def fan(temp):
-    if temp > ON_THRESHOLD and not fan.value:
-        fan.on()
-        
-    elif fan.value and temp < OFF_THRESHOLD:
+def fanOn():
+    fan.on()
+    
+def fanOff():
+    if fan.value == 1:
         fan.off()
-        
-    time.sleep(SLEEP_INTERVAL)

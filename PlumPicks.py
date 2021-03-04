@@ -13,6 +13,7 @@ from datetime import datetime
 #import statistics
 import time
 from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin
+#from fancontroller import get_temp, fanOn, fanOff
 
 winColumnPrev = 0
 unitColumnPrev = 0
@@ -82,6 +83,11 @@ while True:
     #set prev column length and sleep for 1 min
     winColumnPrev = len(list(filter(None,winColumn[1:])))
     unitColumnPrev = len(list(filter(None,unitColumn[1:])))
+    # currTemp = get_temp()
+    # if currTemp > 65:
+    #     fanOn()
+    # else:
+    #     fanOff()
     time.sleep(60)
             
         
