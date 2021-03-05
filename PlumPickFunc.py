@@ -175,7 +175,30 @@ def toWin(plum):
         toWinArray = [0,0]
     return sum(toWinArray)
     
-    
-    
+def dayTotal(plum, m, d, y):
+    dayTotalArr = []
+    dayTotalArr.clear()
+    for index, row in plum.iterrows():
+        try:
+            Line = int(row['Line'])
+            Units = float(row['Units'])
+            date = row['Date'].split('/')
+            if int(m) == int(date[0]) and int(d) == int(date[1]):
+                if Line < 0:
+                    Risk = -1.0
+                    Win = -100/Line
+                else:
+                    Risk = -1.0
+                    Win = Line * .01
+                if row['Result'].strip() == 'Win':
+                    dayTotalArr.append(Win * Units)
+                elif row['Result'].strip() == 'Loss':
+                    dayTotalArr.append(Risk * Units)
+        except:
+            pass
+    if not dayTotalArr:
+        dayTotalArr = [0,0]
+    return sum(dayTotalArr)
+        
     
     

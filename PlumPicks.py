@@ -12,7 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 #import statistics
 import time
-from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin
+from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin, dayTotal
 #from fancontroller import get_temp, fanOn, fanOff
 
 winColumnPrev = 0
@@ -57,6 +57,9 @@ while True:
     
     #get current time
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
+    m = dt_string[:2]
+    d = dt_string[4:5]
+    y = dt_string[7:10]
     
     #check if updates were made
     if len(list(filter(None,winColumn[1:]))) != winColumnPrev or len(list(filter(None,unitColumn[1:]))) != unitColumnPrev:
@@ -73,7 +76,8 @@ while True:
                     statSheet.update_cell(j,7, winPercentage[1])
                     statSheet.update_cell(j,8, atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))
                     statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
-                    statSheet.update_cell(j,10, avgUnit(plumOwnerDict[i]))
+                    statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
+                    statSheet.update_cell(j,11, avgUnit(plumOwnerDict[i]))
         #log time
         print("date and time = ", dt_string)
         statSheet.update_cell(12,2, dt_string)
