@@ -38,22 +38,33 @@ while True:
     #create a DataFrame with all our picks :)
     data = dataSheet.get_all_values()
     headers = data.pop(0)
-    df = pd.DataFrame(data, columns=headers)
+    dfData = pd.DataFrame(data, columns=headers)
+    
+    #create a DataFrame with current Stats
+    stats = statSheet.get_all_values()
+    header = stats.pop(0)
+    dfStat = pd.DataFrame(stats, columns=header)
     
     #initialize variables
     plumRideDict = {}
     plumOwnerDict = {}
+    plumStatDict = {}
+    
     #datetime object containig current date and time
     now = datetime.now()
     #populate plumOwner picks
     for i in plumNames:
-        plumOwnerDict[i] = df[df.Owner == i]
+        plumOwnerDict[i] = dfData[dfData.Owner == i]
     
     #populate plumRider picks
     for i in plumNames:
-        ld = df[df.Owner != i]
+        ld = dfData[dfData.Owner != i]
         ld.drop(ld[ld[i].str.strip() != "X"].index, inplace = True)
         plumRideDict[i] = ld
+    
+    #populate current stats
+    for i in plumNames:
+        plumStatDict[i] = dfStat[dfStat.Plum == i]
     
     #get current time
     dt_string = now.strftime("%m/%d/%Y %H:%M:%S")
@@ -67,17 +78,33 @@ while True:
         for i in plumNames:
             for j in range(1,8):
                 if statSheet.cell(j,1).value == i:
-                    statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
-                    statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
+                    if abs(float(plumStatDict[i]["As Rider (u)"]) - unitCalc(plumRideDict[i])) > 0.1:
+                        statSheet.update_cell(j,3, unitCalc(plumRideDict[i]))
+                        print("updated {} unit Ride calc".format(i))
+                    if abs(float(plumStatDict[i]["As Owner (u)"]) - unitCalc(plumOwnerDict[i])) > 0.1:
+                        statSheet.update_cell(j,2, unitCalc(plumOwnerDict[i]))
+                        print("updated {} unit Owner calc".format(i))
                     winPercentage = winPerc(plumOwnerDict[i])
-                    statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
-                    statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
-                    statSheet.update_cell(j,6, winPercentage[0])
-                    statSheet.update_cell(j,7, winPercentage[1])
-                    statSheet.update_cell(j,8, atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))
-                    statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
-                    statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
-                    statSheet.update_cell(j,11, avgUnit(plumOwnerDict[i]))
+                    if abs(float(plumStatDict[i]["In Straight (u)"]) - strCalc(plumOwnerDict[i])) > 0.1:
+                        statSheet.update_cell(j,4, strCalc(plumOwnerDict[i]))
+                        statSheet.update_cell(j,6, winPercentage[0])
+                        print("updated {} straight calc".format(i))
+                    if abs(float(plumStatDict[i]["In Parlay (u)"]) - parlCalc(plumOwnerDict[i])) > 0.1:
+                        statSheet.update_cell(j,5, parlCalc(plumOwnerDict[i]))
+                        statSheet.update_cell(j,7, winPercentage[1])
+                        print("updated {} parlay calc".format(i))
+                    if float(plumStatDict[i]["At Risk (u)"]) != float((atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))):
+                        statSheet.update_cell(j,8, atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))
+                        print("updated {} at risk".format(i))
+                    if abs(float(plumStatDict[i]["To Win (u)"]) - (toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))) > 0.1:
+                        statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
+                        print("updated {} to win".format(i))
+                    if abs(float(plumStatDict[i]["Day Total (u)"]) - (dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))) > 0.1:
+                        statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
+                        print("updated {} day total".format(i))
+                    if abs(float(plumStatDict[i]["Avg Unit"]) - avgUnit(plumOwnerDict[i])) > 0.01:
+                        statSheet.update_cell(j,11, avgUnit(plumOwnerDict[i]))
+                        print("updated {} avg unit".format(i))
         #log time
         print("date and time = ", dt_string)
         statSheet.update_cell(12,2, dt_string)
@@ -92,10 +119,9 @@ while True:
     #     fanOn()
     # else:
     #     fanOff()
-    time.sleep(300)
+    time.sleep(100)
             
         
-
 
 
 
