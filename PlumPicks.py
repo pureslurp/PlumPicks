@@ -76,7 +76,7 @@ while True:
                     statSheet.update_cell(j,7, winPercentage[1])
                     statSheet.update_cell(j,8, atRisk(plumOwnerDict[i]) + atRisk(plumRideDict[i]))
                     statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
-                    statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
+                    #statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
                     statSheet.update_cell(j,11, avgUnit(plumOwnerDict[i]))
         #log time
         print("date and time = ", dt_string)
