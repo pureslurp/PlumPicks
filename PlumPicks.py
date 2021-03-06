@@ -92,7 +92,7 @@ while True:
     #     fanOn()
     # else:
     #     fanOff()
-    time.sleep(60)
+    time.sleep(101)
             
         
 
