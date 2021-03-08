@@ -108,8 +108,10 @@ while True:
         #log time
         print("date and time = ", dt_string)
         statSheet.update_cell(12,2, dt_string)
+        statSheet.update_cell(14,2, dt_string)
         x = 0
     else: 
+        statSheet.update_cell(14,2, dt_string)
         print('no updates @ {}'.format(dt_string))
     #set prev column length and sleep for 1 min
     winColumnPrev = len(list(filter(None,winColumn[1:])))
