@@ -75,6 +75,8 @@ def avgUnit(plum):
             unitAvg.append(Units)
         except:
             pass
+    if not unitAvg :
+        unitAvg = [0,0]
     averageUnit = statistics.mean(unitAvg)
     return averageUnit
 
