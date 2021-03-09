@@ -177,7 +177,7 @@ def toWin(plum):
         toWinArray = [0,0]
     return sum(toWinArray)
     
-def dayTotal(plum, m, d, y):
+def dayTotal(plum, m, d):
     dayTotalArr = []
     dayTotalArr.clear()
     for index, row in plum.iterrows():
@@ -202,5 +202,55 @@ def dayTotal(plum, m, d, y):
         dayTotalArr = [0,0]
     return sum(dayTotalArr)
         
+def getDates(plumOwn, plumRide):
+    prevDate = 0
+    dateArray = []
+    try:
+        for index, row in plumOwn.iterrows():
+            date = row['Date']
+            if date != prevDate:
+                dateArray.append(date)
+                prevDate = date
+        for index, row in plumRide.iterrows():
+            if row['Date'] not in dateArray:
+                dateArray.append(row['Date'])
+    except:
+        pass
+    if not dateArray:
+        dateArray = ['0/0/0000']
+    return dateArray
+
+def getTotals(plumOwn, plumRide):
+    dayTotals = []
+    date = getDates(plumOwn, plumRide)
+    for date in date:
+        date = date.split('/')
+        m = int(date[0])
+        d = int(date[1])
+        todayTotal = dayTotal(plumOwn,m,d) + dayTotal(plumRide,m,d)
+        dayTotals.append(todayTotal)
+    if not dayTotals:
+        dayTotals = [0,0]
+    return dayTotals
+        
+def findMaxMin(plumOwn, plumRide):
+    totals = getTotals(plumOwn, plumRide)
+    cumDays = [0,0,0,0,0,0,0,0]
+    i = 0
+    for total in totals:
+        cumDays.insert(i,total)
+        i += 1
+    cumDays[1] = cumDays[0] + cumDays[1]
+    cumDays[2] = cumDays[1] + cumDays[2]
+    cumDays[3] = cumDays[2] + cumDays[3]
+    cumDays[4] = cumDays[3] + cumDays[4]
+    cumDays[5] = cumDays[4] + cumDays[5]
+    cumDays[6] = cumDays[5] + cumDays[6]
+    return max(cumDays), min(cumDays)
+    
+        
+        
+    
+            
     
     

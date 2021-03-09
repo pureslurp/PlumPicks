@@ -12,7 +12,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
 #import statistics
 import time
-from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin, dayTotal
+from PlumPickFunc import unitCalc, winPerc, strCalc, parlCalc, avgUnit, atRisk, toWin, dayTotal, getDates, findMaxMin, getTotals
 #from fancontroller import get_temp, fanOn, fanOff
 
 winColumnPrev = 0
@@ -99,12 +99,18 @@ while True:
                     if abs(float(plumStatDict[i]["To Win (u)"]) - (toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))) > 0.1:
                         statSheet.update_cell(j,9, toWin(plumOwnerDict[i]) + toWin(plumRideDict[i]))
                         print("updated {} to win".format(i))
-                    if abs(float(plumStatDict[i]["Day Total (u)"]) - (dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))) > 0.1:
-                        statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d, y) + dayTotal(plumRideDict[i], m , d, y))
+                    if abs(float(plumStatDict[i]["Day Total (u)"]) - (dayTotal(plumOwnerDict[i], m, d) + dayTotal(plumRideDict[i], m , d))) > 0.1:
+                        statSheet.update_cell(j,10, dayTotal(plumOwnerDict[i], m, d) + dayTotal(plumRideDict[i], m , d))
                         print("updated {} day total".format(i))
                     if abs(float(plumStatDict[i]["Avg Unit"]) - avgUnit(plumOwnerDict[i])) > 0.01:
-                        statSheet.update_cell(j,11, avgUnit(plumOwnerDict[i]))
+                        statSheet.update_cell(j,13, avgUnit(plumOwnerDict[i]))
                         print("updated {} avg unit".format(i))
+                    if abs(float(plumStatDict[i]["Week High (u)"]) - findMaxMin(plumOwnerDict[i],plumRideDict[i])[0]) > 0.1:
+                        statSheet.update_cell(j,11, findMaxMin(plumOwnerDict[i],plumRideDict[i])[0])
+                        print("updated {} week high".format(i))
+                    if abs(float(plumStatDict[i]["Week Low (u)"]) - findMaxMin(plumOwnerDict[i],plumRideDict[i])[1]) > 0.1:
+                        statSheet.update_cell(j,12, findMaxMin(plumOwnerDict[i],plumRideDict[i])[1])
+                        print("updated {} week high".format(i))
         #log time
         print("date and time = ", dt_string)
         statSheet.update_cell(12,2, dt_string)
