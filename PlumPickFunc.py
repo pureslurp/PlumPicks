@@ -7,6 +7,7 @@ Created on Mon Mar  1 21:37:32 2021
 """
 #import libraries
 import statistics
+import datetime
 
 #calculate units won or lost
 def unitCalc(plum):
@@ -223,7 +224,11 @@ def getDates(plumOwn, plumRide):
 def getTotals(plumOwn, plumRide):
     dayTotals = []
     date = getDates(plumOwn, plumRide)
+    dateFilt = []
     for date in date:
+        if date not in dateFilt:
+            dateFilt.append(date)
+    for date in dateFilt:
         date = date.split('/')
         m = int(date[0])
         d = int(date[1])
@@ -246,8 +251,31 @@ def findMaxMin(plumOwn, plumRide):
     cumDays[4] = cumDays[3] + cumDays[4]
     cumDays[5] = cumDays[4] + cumDays[5]
     cumDays[6] = cumDays[5] + cumDays[6]
+    #print(cumDays)
     return max(cumDays), min(cumDays)
+
+
+def avgBets(plumOwn, plumRide):
+    betsDay = []
+    i = 0
+    date = getDates(plumOwn, plumRide)
+    dateFilt = []
+    dayOfWeek = datetime.datetime.today().weekday()
+    #print(dayOfWeek)
+    betsDay = [0] * (dayOfWeek + 1)
+    for date in date:
+        if date not in dateFilt:
+            dateFilt.append(date)
+    for date in dateFilt:
+        if i <= dayOfWeek:
+            todayOwn = plumOwn[plumOwn.Date == date]
+            todayRide = plumRide[plumRide.Date == date]
+            todayTotal = todayOwn.shape[0] + todayRide.shape[0]
+            betsDay[i] = todayTotal
+            i = i + 1
+    return statistics.mean(betsDay)
     
+                
         
         
     
