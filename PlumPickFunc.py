@@ -259,7 +259,6 @@ def avgBets(plumStat):
     owned = int(plumStat['Owned'])
     rode = int(plumStat['Rode'])
     total = owned + rode
-    print(total)
     dayOfWeek = datetime.datetime.today().weekday()
     avgBet = total / (dayOfWeek + 1)
     return avgBet
