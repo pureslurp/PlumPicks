@@ -255,25 +255,14 @@ def findMaxMin(plumOwn, plumRide):
     return max(cumDays), min(cumDays)
 
 
-def avgBets(plumOwn, plumRide):
-    betsDay = []
-    i = 0
-    date = getDates(plumOwn, plumRide)
-    dateFilt = []
+def avgBets(plumStat):
+    owned = int(plumStat['Owned'])
+    rode = int(plumStat['Rode'])
+    total = owned + rode
+    print(total)
     dayOfWeek = datetime.datetime.today().weekday()
-    #print(dayOfWeek)
-    betsDay = [0] * (dayOfWeek + 1)
-    for date in date:
-        if date not in dateFilt:
-            dateFilt.append(date)
-    for date in dateFilt:
-        if i <= dayOfWeek:
-            todayOwn = plumOwn[plumOwn.Date == date]
-            todayRide = plumRide[plumRide.Date == date]
-            todayTotal = todayOwn.shape[0] + todayRide.shape[0]
-            betsDay[i] = todayTotal
-            i = i + 1
-    return statistics.mean(betsDay)
+    avgBet = total / (dayOfWeek + 1)
+    return avgBet
     
                 
         
