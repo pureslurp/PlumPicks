@@ -13,6 +13,7 @@ import datetime
 def unitCalc(plum):
     unitData = []
     unitData.clear()
+    plum = plum[plum.Result != ""]
     for index, row in plum.iterrows():
         try:
             Line = int(row['Line'])
@@ -252,7 +253,9 @@ def findMaxMin(plumOwn, plumRide):
     cumDays[5] = cumDays[4] + cumDays[5]
     cumDays[6] = cumDays[5] + cumDays[6]
     #print(cumDays)
-    return max(cumDays), min(cumDays)
+    dayOfWeek = datetime.datetime.today().weekday()
+    trimCumDays = cumDays[:int((dayOfWeek+1))]
+    return max(0,max(trimCumDays)), min(trimCumDays)
 
 
 def avgBets(plumStat):
