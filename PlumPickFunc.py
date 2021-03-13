@@ -252,10 +252,9 @@ def findMaxMin(plumOwn, plumRide):
     cumDays[4] = cumDays[3] + cumDays[4]
     cumDays[5] = cumDays[4] + cumDays[5]
     cumDays[6] = cumDays[5] + cumDays[6]
-    #print(cumDays)
     dayOfWeek = datetime.datetime.today().weekday()
     trimCumDays = cumDays[:int((dayOfWeek+1))]
-    return max(0,max(trimCumDays)), min(trimCumDays)
+    return max(0,max(trimCumDays)), min(0,min(trimCumDays))
 
 
 def avgBets(plumStat):
